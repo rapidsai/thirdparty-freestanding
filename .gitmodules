@@ -1,3 +1,4 @@
 [submodule "libcxx"]
 	path = libcxx
-	url = https://github.com/ogiroux/libcxx
+	url = https://github.com/rapidsai/thirdparty-libcxx.git
+	branch = rapidsai-interop
