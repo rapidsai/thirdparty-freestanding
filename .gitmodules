@@ -1,4 +1,4 @@
 [submodule "libcxx"]
 	path = libcxx
 	url = https://github.com/rapidsai/thirdparty-libcxx.git
-	branch = c++20-to-c++14-backports
+	branch = rapidsai-interop
