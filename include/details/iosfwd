@@ -26,7 +26,11 @@ THE SOFTWARE.
 #ifndef _SIMT_IOSFWD
 #define _SIMT_IOSFWD
 
-#include <wchar.h>  // for mbstate_t
+#ifdef _LIBCUDACXX_HAS_NO_WCHAR
+    struct mbstate_t;
+#else
+    #include <wchar.h>  // for mbstate_t
+#endif // _LIBCUDACXX_HAS_NO_WCHAR
 
 #include "__config"
 

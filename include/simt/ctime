@@ -26,7 +26,42 @@ THE SOFTWARE.
 #ifndef _SIMT_CTIME
 #define _SIMT_CTIME
 
-#include <time.h>
+#ifdef _LIBCUDACXX_HAS_NO_CTIME
+    #define NULL 0
+    #define CLOCKS_PER_SEC 1000000
+
+    typedef unsigned long size_t;
+    typedef long clock_t;
+    typedef long time_t;
+    struct tm {
+      int tm_sec;
+      int tm_min;
+      int tm_hour;
+      int tm_mday;
+      int tm_mon;
+      int tm_year;
+      int tm_wday;
+      int tm_yday;
+      int tm_isdst;
+    };
+    #if __cplusplus >= 201703L
+    struct timespec {
+      time_t tv_sec;
+      long tv_nsec;
+    };
+    #endif // __cplusplus >= 201703L
+    char *asctime(const struct tm *timeptr);
+    clock_t clock(void);
+    char *ctime(const time_t *timer);
+    double difftime(time_t time1, time_t time2);
+    struct tm *gmtime(const time_t *timer);
+    struct tm *localtime(const time_t *timer);
+    time_t mktime(struct tm *timeptr);
+    size_t strftime(char *str, size_t maxsize, const char *format, const struct tm *timeptr);
+    time_t time(time_t *timer);
+#else
+    #include <time.h>
+#endif // _LIBCUDACXX_HAS_NO_CTIME
 
 #include "../details/__config"
 

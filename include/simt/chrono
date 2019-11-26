@@ -56,6 +56,10 @@ THE SOFTWARE.
 #  undef _LIBCPP_STD_VER_PREV
 #endif //_LIBCUDACXX_USE_CXX20_CHRONO
 
+_LIBCPP_BEGIN_NAMESPACE_STD
+    template <class _Iter> class __wrap_iter;
+_LIBCPP_END_NAMESPACE_STD
+
 #endif //_SIMT_CHRONO
 
 
