@@ -29,17 +29,17 @@ THE SOFTWARE.
     #include <cstddef>
 #endif //__CUDACC_RTC__
 
-#ifdef _LIBCUDACXX_HAS_NO_CSTDDEF
-    _LIBCPP_BEGIN_NAMESPACE_STD
-    typedef decltype(nullptr) nullptr_t;
-    _LIBCPP_END_NAMESPACE_STD
-#else
-    #include <stddef.h>
-#endif // _LIBCUDACXX_HAS_NO_CSTDDEF
-
 #include "version"
 
 #include "../details/__config"
+
+#ifdef _LIBCUDACXX_HAS_NO_CSTDDEF
+_LIBCPP_BEGIN_NAMESPACE_STD
+    typedef decltype(nullptr) nullptr_t;
+_LIBCPP_END_NAMESPACE_STD
+#else
+    #include <stddef.h>
+#endif // _LIBCUDACXX_HAS_NO_CSTDDEF
 
 #include "../../libcxx/include/cstddef"
 
