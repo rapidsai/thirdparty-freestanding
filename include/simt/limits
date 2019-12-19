@@ -29,6 +29,10 @@ THE SOFTWARE.
     #include <limits>
 #endif //__CUDACC_RTC__
 
+#ifdef __CUDACC_RTC__
+#include "cfloat"
+#endif // __CUDACC_RTC__
+
 #include "type_traits"
 #include "version"
 #include "../details/__config"

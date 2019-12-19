@@ -29,7 +29,111 @@ THE SOFTWARE.
     #include <cfloat>
 #endif //__CUDACC_RTC__
 
-#include <float.h>
+#ifdef _LIBCUDACXX_HAS_NO_CFLOAT
+    inline float __jitify_int_as_float(int i) {
+      union FloatInt {
+        float f;
+        int i;
+      } fi;
+      fi.i = i;
+      return fi.f;
+    }
+    inline __host__ __device__ double __jitify_longlong_as_double(long long i) {
+      union DoubleLongLong {
+        double f;
+        long long i;
+      } fi;
+      fi.i = i;
+      return fi.f;
+    }
+    #define FLT_RADIX       2
+    #define FLT_MANT_DIG    24
+    #define DBL_MANT_DIG    53
+    #define FLT_DIG         6
+    #define DBL_DIG         15
+    #define FLT_MIN_EXP     -125
+    #define DBL_MIN_EXP     -1021
+    #define FLT_MIN_10_EXP  -37
+    #define DBL_MIN_10_EXP  -307
+    #define FLT_MAX_EXP     128
+    #define DBL_MAX_EXP     1024
+    #define FLT_MAX_10_EXP  38
+    #define DBL_MAX_10_EXP  308
+    #define FLT_MAX         __jitify_int_as_float(2139095039)
+    #define DBL_MAX         __jitify_longlong_as_double(9218868437227405311)
+    #define FLT_EPSILON     __jitify_int_as_float(872415232)
+    #define DBL_EPSILON     __jitify_longlong_as_double(4372995238176751616)
+    #define FLT_MIN         __jitify_int_as_float(8388608)
+    #define DBL_MIN         __jitify_longlong_as_double(4503599627370496)
+    #define FLT_ROUNDS      1
+    #if defined __cplusplus && __cplusplus >= 201103L
+    #define FLT_EVAL_METHOD 0
+    #define DECIMAL_DIG     21
+    #endif // defined __cplusplus && __cplusplus >= 201103L
+
+    #ifdef __CUDACC_RTC__
+    #define __FLT_EVAL_METHOD__ 0
+    #define __DEC_EVAL_METHOD__ 2
+    #define __FLT_RADIX__ 2
+    #define __FLT_MANT_DIG__ 24
+    #define __FLT_DIG__ 6
+    #define __FLT_MIN_EXP__ (-125)
+    #define __FLT_MIN_10_EXP__ (-37)
+    #define __FLT_MAX_EXP__ 128
+    #define __FLT_MAX_10_EXP__ 38
+    #define __FLT_DECIMAL_DIG__ 9
+    #define __FLT_MAX__ 3.40282346638528859812e+38F
+    #define __FLT_MIN__ 1.17549435082228750797e-38F
+    #define __FLT_EPSILON__ 1.19209289550781250000e-7F
+    #define __FLT_DENORM_MIN__ 1.40129846432481707092e-45F
+    #define __FLT_HAS_DENORM__ 1
+    #define __FLT_HAS_INFINITY__ 1
+    #define __FLT_HAS_QUIET_NAN__ 1
+    #define __DBL_MANT_DIG__ 53
+    #define __DBL_DIG__ 15
+    #define __DBL_MIN_EXP__ (-1021)
+    #define __DBL_MIN_10_EXP__ (-307)
+    #define __DBL_MAX_EXP__ 1024
+    #define __DBL_MAX_10_EXP__ 308
+    #define __DBL_DECIMAL_DIG__ 17
+    #define __DBL_MAX__ ((double)1.79769313486231570815e+308L)
+    #define __DBL_MIN__ ((double)2.22507385850720138309e-308L)
+    #define __DBL_EPSILON__ ((double)2.22044604925031308085e-16L)
+    #define __DBL_DENORM_MIN__ ((double)4.94065645841246544177e-324L)
+    #define __DBL_HAS_DENORM__ 1
+    #define __DBL_HAS_INFINITY__ 1
+    #define __DBL_HAS_QUIET_NAN__ 1
+    #define __LDBL_MANT_DIG__ 64
+    #define __LDBL_DIG__ 18
+    #define __LDBL_MIN_EXP__ (-16381)
+    #define __LDBL_MIN_10_EXP__ (-4931)
+    #define __LDBL_MAX_EXP__ 16384
+    #define __LDBL_MAX_10_EXP__ 4932
+    #define __DECIMAL_DIG__ 21
+    #define __LDBL_MAX__ 1.18973149535723176502e+4932L
+    #define __LDBL_MIN__ 3.36210314311209350626e-4932L
+    #define __LDBL_EPSILON__ 1.08420217248550443401e-19L
+    #define __LDBL_DENORM_MIN__ 3.64519953188247460253e-4951L
+    #define __LDBL_HAS_DENORM__ 1
+    #define __LDBL_HAS_INFINITY__ 1
+    #define __LDBL_HAS_QUIET_NAN__ 1
+
+    // TODO(benbarsdell): These are hacky.
+    float __builtin_huge_valf(void) { return __jitify_int_as_float(0x7f800000); }
+    double __builtin_huge_val(void) { return __jitify_longlong_as_double(0x7FF0000000000000l); }
+    long double __builtin_huge_vall(void) { return __builtin_huge_val(); }
+    // TODO(benbarsdell): These should really be proper literals.
+    float __builtin_nanf(const char* arg) { return nanf(arg); }
+    float __builtin_nansf(const char* arg) { return nanf(arg); }
+    double __builtin_nan(const char* arg) { return nan(arg); }
+    double __builtin_nans(const char* arg) { return nan(arg); }
+    long double __builtin_nanl(const char* arg) { return nan(arg); }
+    long double __builtin_nansl(const char* arg) { return nan(arg); }
+    #endif // __CUDACC_RTC__
+#else
+    #include <float.h>
+#endif // _LIBCUDACXX_HAS_NO_CFLOAT
+
 #include "../details/__config"
 
 #include "../../libcxx/include/cfloat"
