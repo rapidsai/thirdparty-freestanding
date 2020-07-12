@@ -103,6 +103,8 @@ THE SOFTWARE.
     #define __DBL_HAS_DENORM__ 1
     #define __DBL_HAS_INFINITY__ 1
     #define __DBL_HAS_QUIET_NAN__ 1
+
+#if !defined(__powerpc64__)
     #define __LDBL_MANT_DIG__ 64
     #define __LDBL_DIG__ 18
     #define __LDBL_MIN_EXP__ (-16381)
@@ -117,6 +119,21 @@ THE SOFTWARE.
     #define __LDBL_HAS_DENORM__ 1
     #define __LDBL_HAS_INFINITY__ 1
     #define __LDBL_HAS_QUIET_NAN__ 1
+#else
+    #define __LDBL_DENORM_MIN__ 4.94065645841246544176568792868221e-324L
+    #define __LDBL_DIG__ 31
+    #define __LDBL_EPSILON__ 4.94065645841246544176568792868221e-324L
+    #define __LDBL_HAS_DENORM__ 1
+    #define __LDBL_HAS_INFINITY__ 1
+    #define __LDBL_HAS_QUIET_NAN__ 1
+    #define __LDBL_MANT_DIG__ 106
+    #define __LDBL_MAX_10_EXP__ 308
+    #define __LDBL_MAX_EXP__ 1024
+    #define __LDBL_MAX__ 1.79769313486231580793728971405301e+308L
+    #define __LDBL_MIN_10_EXP__ (-291)
+    #define __LDBL_MIN_EXP__ (-968)
+    #define __LDBL_MIN__ 2.00416836000897277799610805135016e-292L
+#endif
 
     // TODO(benbarsdell): These are hacky.
     float __builtin_huge_valf(void) { return __jitify_int_as_float(0x7f800000); }
